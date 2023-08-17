@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import prismadb from '@/lib/prismadb';
+import prismadb from '@/libs/prismadb';
 import { compare } from 'bcrypt';
 
 export default NextAuth({
@@ -14,7 +14,7 @@ export default NextAuth({
       },
 
       async authorize(credentials) {
-        if (credentials?.email || !credentials?.password) {
+        if (!credentials?.email || !credentials?.password) {
           throw new Error('Email and password required');
         }
 

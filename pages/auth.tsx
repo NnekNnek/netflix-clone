@@ -1,5 +1,6 @@
 import Input from '@/components/Input';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import axios from 'axios';
 
 function auth() {
   const [email, setEmail] = useState('');
@@ -11,6 +12,16 @@ function auth() {
   const toggleVariant = useCallback(() => {
     setVariant((currentVariant) => (currentVariant === 'login' ? 'register' : 'login'));
   }, []);
+
+  const register = useCallback(async () => {
+    try {
+      console.log('auth');
+      await axios.post('/api/register', { email, name, password });
+      console.log('hi');
+    } catch (error) {
+      console.log('hi error', error);
+    }
+  }, [email, name, password]);
 
   return (
     <div className='relative h-full w-full bg-[url("/images/hero.jpg")] bg-no-repeat bg-center bg-fixed bg-cover '>
@@ -44,15 +55,16 @@ function auth() {
               <Input
                 id="Password"
                 onChange={(ev: any) => setPassword(ev.target.value)}
-                value={email}
+                value={password}
                 label="Password"
                 type="password"
               />
             </div>
             <button
+              onClick={register}
               className="bg-red-600 py-3 text-white rounded-md w-full mt-10
                hover:bg-red-700 transition">
-              {variant === 'login' ? 'Login' : 'Sing up'}
+              {variant === 'login' ? 'Login' : 'Sign up'}
             </button>
             <p className="text-neutral-500 mt-12">
               {variant === 'login' ? 'First time using Netflix?' : 'Already have an account?'}
